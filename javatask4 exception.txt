@@ -1,0 +1,359 @@
+Q1:
+
+package com.java.demos;
+
+//Define the custom exception classes
+class AgeNotWithinRangeException extends Exception {
+ public AgeNotWithinRangeException(String message) {
+     super(message);
+ }
+}
+
+class NameNotValidException extends Exception {
+ public NameNotValidException(String message) {
+     super(message);
+ }
+}
+
+//Define the Student class
+class Student {
+ private int rollNo;
+ private String name;
+ private int age;
+ private String course;
+
+ public Student(int rollNo, String name, int age, String course) throws AgeNotWithinRangeException, NameNotValidException {
+     if (!isValidName(name)) {
+         throw new NameNotValidException("Name is not valid. It should not contain numbers or special symbols.");
+     }
+     if (!isValidAge(age)) {
+         throw new AgeNotWithinRangeException("Age is not within the range of 15 to 21.");
+     }
+     this.rollNo = rollNo;
+     this.name = name;
+     this.age = age;
+     this.course = course;
+ }
+
+ private boolean isValidName(String name) {
+     for (char c : name.toCharArray()) {
+         if (!Character.isLetter(c) &&!Character.isSpaceChar(c)) {
+             return false;
+         }
+     }
+     return true;
+ }
+
+ private boolean isValidAge(int age) {
+     return age >= 15 && age <= 21;
+ }
+
+ // Getters and setters
+ public int getRollNo() {
+     return rollNo;
+ }
+
+ public void setRollNo(int rollNo) {
+     this.rollNo = rollNo;
+ }
+
+ public String getName() {
+     return name;
+ }
+
+ public void setName(String name) throws NameNotValidException {
+     if (!isValidName(name)) {
+         throw new NameNotValidException("Name is not valid. It should not contain numbers or special symbols.");
+     }
+     this.name = name;
+ }
+
+ public int getAge() {
+     return age;
+ }
+
+ public void setAge(int age) throws AgeNotWithinRangeException {
+     if (!isValidAge(age)) {
+         throw new AgeNotWithinRangeException("Age is not within the range of 15 to 21.");
+     }
+     this.age = age;
+ }
+
+ public String getCourse() {
+     return course;
+ }
+
+ public void setCourse(String course) {
+     this.course = course;
+ }
+ 
+ 
+}
+
+
+package com.java.demos;
+
+import java.util.Scanner;
+
+//Test the Student class
+public class StudentMain {
+public static void main(String[] args) {
+   try {
+	   int rollNo; String name; int age; String course;
+	   Scanner sc=new Scanner(System.in);
+	   System.out.println("Enter rollno:");
+	   rollNo=sc.nextInt();
+	   System.out.println("Enter name:");
+	   name=sc.next();
+	   System.out.println("Enter age:");
+	   age=sc.nextInt();
+	   System.out.println("Enter course:");
+	   course=sc.next();
+       Student student = new Student(rollNo, name,age, course);
+       System.out.println("Student created successfully!");
+   } catch (AgeNotWithinRangeException | NameNotValidException e) {
+       System.out.println("Error: " + e.getMessage());
+   }
+}
+}
+===================================================================================================
+
+Q2:
+
+package com.java.demos;
+
+import java.util.Scanner;
+
+//Define the custom exception class
+class InvalidAgeException extends Exception {
+ public InvalidAgeException(String message) {
+     super(message);
+ }
+}
+
+//Define the Voter class
+class Voter {
+ private int voterId;
+ private String name;
+ private int age;
+
+ public Voter(int voterId, String name, int age) throws InvalidAgeException {
+     if (age < 18) {
+         throw new InvalidAgeException("Invalid age for voter");
+     }
+     this.voterId = voterId;
+     this.name = name;
+     this.age = age;
+ }
+
+ // Getters and setters
+ public int getVoterId() {
+     return voterId;
+ }
+
+ public void setVoterId(int voterId) {
+     this.voterId = voterId;
+ }
+
+ public String getName() {
+     return name;
+ }
+
+ public void setName(String name) {
+     this.name = name;
+ }
+
+ public int getAge() {
+     return age;
+ }
+
+ public void setAge(int age) throws InvalidAgeException {
+     if (age < 18) {
+         throw new InvalidAgeException("Invalid age for voter");
+     }
+     this.age = age;
+ }
+
+ public static void main(String[] args) {
+     try {
+    	int voterId; String name; int age;
+	   Scanner sc=new Scanner(System.in);
+	   System.out.println("Enter VoterId:");
+	   voterId=sc.nextInt();
+	   System.out.println("Enter name:");
+	   name=sc.next();
+	   System.out.println("Enter age:");
+	   age=sc.nextInt();
+         Voter voter = new Voter(voterId, name, age);
+         System.out.println("Voter created successfully!");
+     } catch (InvalidAgeException e) {
+         System.out.println("Error: " + e.getMessage());
+     }
+
+ }
+}
+===================================================================================
+Q3:
+package com.java.demos;
+
+import java.util.Scanner;
+
+public class Weekdays {
+    public static void main(String[] args) {
+        String[] weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the day position (0-6): ");
+        int dayPosition = scanner.nextInt();
+
+        try {
+            System.out.println("The day at position " + dayPosition + " is " + weekdays[dayPosition]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Error: Day position is out of range. Please enter a value between 0 and 6.");
+        }
+    }
+}
+
+======================================================================================================
+
+Q4:
+package com.java.demos;
+
+import java.util.*;
+
+public class StudentGradeBook {
+    private Map<String, Integer> studentGrades;
+
+    public StudentGradeBook() {
+        this.studentGrades = new HashMap<>();
+    }
+
+    public void addStudent(String name, int grade) {
+        studentGrades.put(name, grade);
+        System.out.println("Student added successfully!");
+    }
+
+    public void removeStudent(String name) {
+        if (studentGrades.containsKey(name)) {
+            studentGrades.remove(name);
+            System.out.println("Student removed successfully!");
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+
+    public void displayGrade(String name) {
+        if (studentGrades.containsKey(name)) {
+            System.out.println("Grade for " + name + ": " + studentGrades.get(name));
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+
+    public static void main(String[] args) {
+        StudentGradeBook gradeBook = new StudentGradeBook();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("1. Add student");
+            System.out.println("2. Remove student");
+            System.out.println("3. Display grade");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+            int option = scanner.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.print("Enter student name: ");
+                    String name = scanner.next();
+                    System.out.print("Enter student grade: ");
+                    int grade = scanner.nextInt();
+                    gradeBook.addStudent(name, grade);
+                    break;
+                case 2:
+                    System.out.print("Enter student name: ");
+                    String removeName = scanner.next();
+                    gradeBook.removeStudent(removeName);
+                    break;
+                case 3:
+                    System.out.print("Enter student name: ");
+                    String displayName = scanner.next();
+                    gradeBook.displayGrade(displayName);
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+}
+===========================================================================
+
+Q5:
+
+package com.java.demos;
+
+import java.util.Scanner;
+import java.util.Stack;
+
+public class IntegerStack {
+     Stack<Integer> stack=new Stack<>();
+
+    public void push(int element) {
+        stack.push(element);
+        System.out.println("Pushed " + element + " onto the stack.");
+    }
+
+    public void pop() {
+        if (stack.isEmpty()) {
+            System.out.println("Stack is empty. Cannot pop.");
+        }
+        else {
+            int poppedElement = stack.pop();
+            System.out.println("Popped " + poppedElement + " from the stack.");
+        }
+    }
+
+    public void displayStack() {
+        System.out.println("Stack: " + stack);
+    }
+
+    public static void main(String[] args) {
+        IntegerStack stack = new IntegerStack();
+        Scanner sc=new Scanner(System.in);
+ 	   
+ 	  while (true) {
+          System.out.println("1. Push");
+          System.out.println("2. Pop");
+          System.out.println("3. Display");
+          System.out.println("4. Exit");
+          System.out.print("Choose an option: ");
+          int option = sc.nextInt();
+
+          switch (option) {
+              case 1:
+                  System.out.print("Enter number to push: ");
+                  int insert = sc.nextInt();
+                  stack.push(insert);
+                  break;
+              case 2:
+                  System.out.print("pop: ");
+                  stack.pop();
+                  break;
+              case 3:
+                  System.out.print("stack: ");
+                  stack.displayStack();
+                  break;
+              case 4:
+                  System.out.println("Exiting...");
+                  return;
+              default:
+                  System.out.println("Invalid option. Please try again.");
+          }
+      }
+  }
+
+}
+
